@@ -25,17 +25,17 @@ module SpringOnion
     slow_extra: ->(exp) { SLOW_EXTRA_RE =~ exp['Extra'] },
   }
 
-  @enabled = ENV.fetch('SPRING_ONION_ENABLED', '') =~ /\A(1|true)\z/i
+  @enabled = (/\A(1|true)\z/i =~ ENV['SPRING_ONION_ENABLED'])
 
-  @sql_filter_re = if ENV.fetch('SPRING_ONION_SQL_FILTER_RE', '').empty?
-                     //
-                   else
-                     Regexp.new(ENV['SPRING_ONION_SQL_FILTER_RE'])
-                   end
+  @sql_filter_re = ENV['SPRING_ONION_SQL_FILTER_RE'].yield_self do |re|
+    re ? Regexp.new(re) : //
+  end
 
   @ignore_sql_filter_re = Regexp.union(
-    /\binformation_schema\b/,
-    *(ENV.fetch('SPRING_ONION_IGNORE_SQL_FILTER_RE', '').empty? ? nil : Regexp.new(ENV['SPRING_ONION_IGNORE_SQL_FILTER_RE']))
+    [/\binformation_schema\b/].tap do |ary|
+      re = ENV['SPRING_ONION_IGNORE_SQL_FILTER_RE']
+      ary << Regexp.new(re) if re
+    end
   )
 
   @sql_filter = lambda do |sql|
@@ -43,13 +43,17 @@ module SpringOnion
   end
 
   @source_filter_re = Regexp.union(
-    %r{/app/},
-    *(ENV.fetch('SPRING_ONION_SOURCE_FILTER_RE', '').empty? ? nil : Regexp.new(ENV['SPRING_ONION_SOURCE_FILTER_RE']))
+    [%r{/app/}].tap do |ary|
+      re = ENV['SPRING_ONION_SOURCE_FILTER_RE']
+      ary << Regexp.new(re) if re
+    end
   )
 
   @ignore_source_filter_re = Regexp.union(
-    Regexp.union(RbConfig::TOPDIR, *Gem.path),
-    *(ENV.fetch('SPRING_ONION_IGNORE_SOURCE_FILTER_RE', '').empty? ? nil : Regexp.new(ENV['SPRING_ONION_IGNORE_SOURCE_FILTER_RE']))
+    [RbConfig::TOPDIR, *Gem.path].tap do |ary|
+      re = ENV['SPRING_ONION_IGNORE_SOURCE_FILTER_RE']
+      ary << Regexp.new(re) if re
+    end
   )
 
   @source_filter = lambda do |backtrace_lines|
