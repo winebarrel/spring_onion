@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description   = 'Log MySQL queries with EXPLAIN that may be slow.'
   spec.homepage      = 'https://github.com/winebarrel/spring_onion'
   spec.license       = 'MIT'
-  spec.required_ruby_version = Gem::Requirement.new('>= 2.3.0')
+  spec.required_ruby_version = Gem::Requirement.new('>= 2.5.0')
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
