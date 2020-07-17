@@ -67,6 +67,8 @@ module SpringOnion
   end
 
   @trace_len = 3
+  @json_pretty = (/\A(1|true)\z/i =~ ENV['SPRING_ONION_JSON_PRETTY'])
+  @color = /\A(1|true)\z/i =~ ENV.fetch('SPRING_ONION_COLOR', $stdout.tty?.to_s)
 
   class << self
     attr_accessor :enabled,
@@ -75,6 +77,8 @@ module SpringOnion
                   :sql_filter_re, :ignore_sql_filter_re, :sql_filter,
                   :source_filter_re, :ignore_source_filter_re, :source_filter,
                   :logger,
-                  :trace_len
+                  :trace_len,
+                  :json_pretty,
+                  :color
   end
 end

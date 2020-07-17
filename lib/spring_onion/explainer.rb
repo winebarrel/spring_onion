@@ -43,12 +43,21 @@ module SpringOnion
 
       return if violation_names_by_line.empty?
 
-      SpringOnion.logger.info({
+      h = {
         sql: sql,
         explain: exp.each_with_index.map { |r, i| { line: i + 1 }.merge(r) },
         violations: violation_names_by_line,
         backtrace: trace.slice(0, SpringOnion.trace_len),
-      }.to_json)
+      }
+
+      line = if SpringOnion.json_pretty
+               JSON.pretty_generate(h)
+             else
+               JSON.dump(h)
+             end
+
+      line = CodeRay.scan(line, :json).terminal if SpringOnion.color
+      SpringOnion.logger.info(line)
     end
   end
 end
