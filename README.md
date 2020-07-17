@@ -1,6 +1,6 @@
 # SpringOnion
 
-Log queries with EXPLAIN that may be slow.
+Log MySQL queries with EXPLAIN that may be slow.
 Inspired by [MySQLCasualLog.pm](https://gist.github.com/kamipo/839e8a5b6d12bddba539).
 
 ## Installation
