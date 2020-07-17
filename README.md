@@ -33,7 +33,7 @@ ActiveRecord::Base.establish_connection(
   database: 'employees',
 )
 
-SpringOnion.enabled = true
+SpringOnion.enabled = true # or `SPRING_ONION_ENABLED=1`
 SpringOnion.connection = ActiveRecord::Base.connection.raw_connection
 SpringOnion.source_filter_re = //
 
