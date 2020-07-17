@@ -25,6 +25,8 @@ module SpringOnion
     slow_extra: ->(exp) { SLOW_EXTRA_RE =~ exp['Extra'] },
   }
 
+  @enabled = ENV.fetch('SPRING_ONION_ENABLED', '') =~ /\A(1|true)\z/i
+
   @sql_filter_re = if ENV.fetch('SPRING_ONION_SQL_FILTER_RE', '').empty?
                      //
                    else
