@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['winebarrel']
   spec.email         = ['sugawara@winebarrel.jp']
 
-  spec.summary       = 'Log queries with EXPLAIN that may be slow.'
-  spec.description   = 'Log queries with EXPLAIN that may be slow.'
+  spec.summary       = 'Log MySQL queries with EXPLAIN that may be slow.'
+  spec.description   = 'Log MySQL queries with EXPLAIN that may be slow.'
   spec.homepage      = 'https://github.com/winebarrel/spring_onion'
   spec.license       = 'MIT'
   spec.required_ruby_version = Gem::Requirement.new('>= 2.3.0')
