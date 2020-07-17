@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'logger'
+require 'coderay'
 require 'active_support'
 
 require 'spring_onion/config'
