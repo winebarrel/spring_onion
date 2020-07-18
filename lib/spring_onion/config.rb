@@ -42,12 +42,9 @@ module SpringOnion
     @ignore_sql_filter_re !~ sql && @sql_filter_re =~ sql
   end
 
-  @source_filter_re = Regexp.union(
-    [%r{/app/}].tap do |ary|
-      re = ENV['SPRING_ONION_SOURCE_FILTER_RE']
-      ary << Regexp.new(re) if re
-    end
-  )
+  @source_filter_re = ENV['SPRING_ONION_SOURCE_FILTER_RE'].yield_self do |re|
+    re ? Regexp.new(re) : %r{/app/}
+  end
 
   @ignore_source_filter_re = Regexp.union(
     [RbConfig::TOPDIR, *Gem.path, '/.rbenv/versions/'].tap do |ary|
