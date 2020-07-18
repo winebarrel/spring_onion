@@ -8,6 +8,8 @@ module SpringOnion
       end
     end
 
+    private
+
     def _with_explain(sql)
       begin
         if SpringOnion.enabled && sql =~ /^SELECT\b/ && SpringOnion.sql_filter.call(sql)
