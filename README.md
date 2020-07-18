@@ -39,7 +39,7 @@ SpringOnion.source_filter_re = //
 
 class Employee < ActiveRecord::Base; end
 
-Employee.all.to_a.count
+p Employee.all.to_a.count
 #=> SpringOnion	INFO	2020-07-18 01:53:27 +0900	{"sql":"SELECT `employees`.* FROM `employees`","explain":[{"line":1,"select_type":"SIMPLE","table":"employees","partitions":null,"type":"ALL","possible_keys":null,"key":null,"key_len":null,"ref":null,"rows":298936,"filtered":100.0,"Extra":null}],"warnings":{"line 1":["slow_type"]},"backtrace":["/foo/bar/zoo/baz.rb:18:in `\u003ctop (required)\u003e'"]}
 #=> 300024
 ```
