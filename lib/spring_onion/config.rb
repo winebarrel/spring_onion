@@ -17,7 +17,7 @@ module SpringOnion
     'Using temporary'
   )
 
-  @violations = {
+  @warnings = {
     slow_select_type: ->(exp) { SLOW_SELECT_TYPE_RE =~ exp['select_type'] },
     slow_type: ->(exp) { SLOW_TYPE_RE =~ exp['type'] },
     slow_possible_keys: ->(exp) { SLOW_POSSIBLE_KEYS_RE =~ exp['possible_keys'] },
@@ -75,7 +75,7 @@ module SpringOnion
   class << self
     attr_accessor :enabled,
                   :connection,
-                  :violations,
+                  :warnings,
                   :sql_filter_re, :ignore_sql_filter_re, :sql_filter,
                   :source_filter_re, :ignore_source_filter_re, :source_filter,
                   :logger,

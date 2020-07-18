@@ -30,23 +30,23 @@ module SpringOnion
     end
 
     def _validate(exp, sql, trace)
-      violations = SpringOnion.violations
-      violation_names_by_line = {}
+      warnings = SpringOnion.warnings
+      warning_names_by_line = {}
 
       exp.each_with_index do |row, i|
-        violation_names = violations.select do |_name, validator|
+        warning_names = warnings.select do |_name, validator|
           validator.call(row)
         end.keys
 
-        violation_names_by_line["line #{i + 1}"] = violation_names unless violation_names.empty?
+        warning_names_by_line["line #{i + 1}"] = warning_names unless warning_names.empty?
       end
 
-      return if violation_names_by_line.empty?
+      return if warning_names_by_line.empty?
 
       h = {
         sql: sql,
         explain: exp.each_with_index.map { |r, i| { line: i + 1 }.merge(r) },
-        violations: violation_names_by_line,
+        warnings: warning_names_by_line,
         backtrace: trace.slice(0, SpringOnion.trace_len),
       }
 
