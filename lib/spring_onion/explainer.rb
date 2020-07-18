@@ -12,7 +12,7 @@ module SpringOnion
 
     def _with_explain(sql)
       begin
-        if SpringOnion.enabled && sql =~ /^SELECT\b/ && SpringOnion.sql_filter.call(sql)
+        if SpringOnion.enabled && sql =~ /\A\s*SELECT\b/i && SpringOnion.sql_filter.call(sql)
           trace = SpringOnion.source_filter.call(caller)
 
           unless trace.length.zero?
