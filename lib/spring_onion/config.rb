@@ -60,9 +60,9 @@ module SpringOnion
   end
 
   @logger = Logger.new($stdout).tap do |logger|
-    logger.formatter = lambda { |severity, datetime, _progname, msg|
+    logger.formatter = lambda do |severity, datetime, _progname, msg|
       "\n#{self}\t#{severity}\t#{datetime}\t#{msg}\n"
-    }
+    end
   end
 
   @trace_len = 3
