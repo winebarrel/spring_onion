@@ -31,33 +31,24 @@ module SpringOnion
 
     def _validate_explain(exp, sql, trace)
       warnings = SpringOnion.warnings
-      warning_names_by_line = {}
+      warning_names_by_index = {}
 
       exp.each_with_index do |row, i|
         warning_names = warnings.select do |_name, validator|
           validator.call(row)
         end.keys
 
-        warning_names_by_line["line #{i + 1}"] = warning_names unless warning_names.empty?
+        warning_names_by_index[i] = warning_names unless warning_names.empty?
       end
 
-      return if warning_names_by_line.empty?
+      return if warning_names_by_index.empty?
 
-      h = {
+      SpringOnion::JsonLogger.log(
         sql: sql,
-        explain: exp.each_with_index.map { |r, i| { line: i + 1 }.merge(r) },
-        warnings: warning_names_by_line,
-        backtrace: trace.slice(0, SpringOnion.trace_len),
-      }
-
-      line = if SpringOnion.json_pretty
-               JSON.pretty_generate(h)
-             else
-               JSON.dump(h)
-             end
-
-      line = CodeRay.scan(line, :json).terminal if SpringOnion.color
-      SpringOnion.logger.info(line)
+        explain: exp,
+        warnings: warning_names_by_index,
+        trace: trace
+      )
     end
   end
 end
