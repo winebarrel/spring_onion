@@ -3,14 +3,14 @@
 module SpringOnion
   module Explainer
     def execute(*args)
-      _with_explain(args.first) do
+      _with_explain(sql: args.first) do
         super
       end
     end
 
     private
 
-    def _with_explain(sql)
+    def _with_explain(sql:)
       begin
         if SpringOnion.enabled && sql =~ /\A\s*SELECT\b/i && SpringOnion.sql_filter.call(sql)
           trace = SpringOnion.source_filter.call(caller)
@@ -21,7 +21,7 @@ module SpringOnion
 
             exp = conn.query("EXPLAIN #{sql}", as: :hash).to_a
             exp.each { |r| r.delete('id') }
-            _validate_explain(exp, sql, trace)
+            _validate_explain(sql: sql, exp: exp, trace: trace)
           end
         end
       rescue StandardError => e
@@ -31,7 +31,7 @@ module SpringOnion
       yield
     end
 
-    def _validate_explain(exp, sql, trace)
+    def _validate_explain(sql:, exp:, trace:)
       warnings = SpringOnion.warnings
       warning_names_by_index = {}
 
