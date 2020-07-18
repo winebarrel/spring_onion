@@ -19,7 +19,7 @@ module SpringOnion
 
             exp = conn.query("EXPLAIN #{sql}", as: :hash).to_a
             exp.each { |r| r.delete('id') }
-            _validate(exp, sql, trace)
+            _validate_explain(exp, sql, trace)
           end
         end
       rescue StandardError => e
@@ -29,7 +29,7 @@ module SpringOnion
       yield
     end
 
-    def _validate(exp, sql, trace)
+    def _validate_explain(exp, sql, trace)
       warnings = SpringOnion.warnings
       warning_names_by_line = {}
 
