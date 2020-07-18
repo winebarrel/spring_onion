@@ -50,14 +50,16 @@ module SpringOnion
   )
 
   @ignore_source_filter_re = Regexp.union(
-    [RbConfig::TOPDIR, *Gem.path].tap do |ary|
+    [RbConfig::TOPDIR, *Gem.path, '/.rbenv/versions/'].tap do |ary|
       re = ENV['SPRING_ONION_IGNORE_SOURCE_FILTER_RE']
       ary << Regexp.new(re) if re
     end
   )
 
   @source_filter = lambda do |backtrace_lines|
-    backtrace_lines.grep_v(@ignore_source_filter_re).grep(@source_filter_re)
+    backtrace_lines = backtrace_lines.grep_v(@ignore_source_filter_re)
+    idx = backtrace_lines.index { |l| @source_filter_re =~ l }
+    idx ? backtrace_lines.slice(idx..-1) : []
   end
 
   @logger = Logger.new($stdout).tap do |logger|
