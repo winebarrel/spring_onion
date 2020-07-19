@@ -1,7 +1,10 @@
 # SpringOnion
 
 Log MySQL queries with EXPLAIN that may be slow.
+
 Inspired by [MySQLCasualLog.pm](https://gist.github.com/kamipo/839e8a5b6d12bddba539).
+
+[![Build Status](https://travis-ci.org/winebarrel/spring_onion.svg?branch=master)](https://travis-ci.org/winebarrel/spring_onion)
 
 ## Installation
 
