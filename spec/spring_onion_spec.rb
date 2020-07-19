@@ -61,6 +61,14 @@ RSpec.describe SpringOnion do
       Actor.all.to_a
       City.all.to_a
     end
+
+    specify 'no connection' do
+      allow(SpringOnion).to receive(:connection).and_return(nil)
+
+      expect do
+        Actor.all.to_a
+      end.to raise_error(SpringOnion::Error)
+    end
   end
 
   context 'without explain' do
