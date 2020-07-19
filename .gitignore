@@ -12,3 +12,5 @@
 
 # Appraisal Gemfile.lock
 /gemfiles/*.lock
+
+/test.rb

@@ -28,13 +28,13 @@ module SpringOnion
   @enabled = (/\A(1|true)\z/i =~ ENV['SPRING_ONION_ENABLED'])
 
   @sql_filter_re = ENV['SPRING_ONION_SQL_FILTER_RE'].yield_self do |re|
-    re ? Regexp.new(re) : //
+    re ? Regexp.new(re, Regexp::IGNORECASE) : //
   end
 
   @ignore_sql_filter_re = Regexp.union(
     [/\binformation_schema\b/].tap do |ary|
       re = ENV['SPRING_ONION_IGNORE_SQL_FILTER_RE']
-      ary << Regexp.new(re) if re
+      ary << Regexp.new(re, Regexp::IGNORECASE) if re
     end
   )
 

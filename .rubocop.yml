@@ -1,6 +1,7 @@
 AllCops:
   Exclude:
     - "gemfiles/**/*"
+    - "test.rb"
   TargetRubyVersion: 2.5
 Style/Documentation:
   Enabled: false
