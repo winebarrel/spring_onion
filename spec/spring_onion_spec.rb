@@ -63,7 +63,7 @@ RSpec.describe SpringOnion do
     end
   end
 
-  context 'with explain' do
+  context 'without explain' do
     before do
       SpringOnion.source_filter_re = %r{/$^/}
     end
