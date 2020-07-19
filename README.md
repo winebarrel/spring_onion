@@ -28,12 +28,11 @@ Or install it yourself as:
 #!/usr/bin/env ruby
 require 'active_record'
 require 'spring_onion'
-require 'logger'
 
 ActiveRecord::Base.establish_connection(
   adapter:  'mysql2',
   username: 'root',
-  database: 'employees',
+  database: 'employees'
 )
 
 SpringOnion.enabled = true # or `SPRING_ONION_ENABLED=1`
