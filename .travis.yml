@@ -2,8 +2,21 @@
 language: ruby
 cache: bundler
 rvm:
+  - 2.5.8
   - 2.6.6
+  - 2.7.1
 gemfile:
   - gemfiles/ar52.gemfile
   - gemfiles/ar60.gemfile
-before_install: gem install bundler -v 2.1.2
+services:
+  - mysql
+env:
+  - DATABASE_URL=mysql2://travis@localhost/sakila
+before_install:
+  - gem install bundler -v 2.1.2
+  - curl -sSfL https://downloads.mysql.com/docs/sakila-db.tar.gz -o - | tar zxf -
+  - cd sakila-db
+  - mysql < sakila-schema.sql
+  - mysql < sakila-data.sql
+script:
+  - bundle exec rake

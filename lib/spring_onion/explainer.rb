@@ -24,6 +24,8 @@ module SpringOnion
             _validate_explain(sql: sql, exp: exp, trace: trace)
           end
         end
+      rescue SpringOnion::Error
+        raise
       rescue StandardError => e
         SpringOnion.logger.error(e)
       end

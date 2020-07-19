@@ -5,7 +5,7 @@ RSpec.describe SpringOnion do
     ActiveRecord::Base.establish_connection(ENV.fetch('DATABASE_URL'))
     SpringOnion.enabled = true
 
-    ENV.fetch('MYSQL_PING_ATTEMPTS', 0).to_i.times do
+    ENV.fetch('MYSQL_PING_ATTEMPTS', 1).to_i.times do
       SpringOnion.connection = ActiveRecord::Base.connection.raw_connection
       break if SpringOnion.connection.ping
     rescue Mysql2::Error::ConnectionError
