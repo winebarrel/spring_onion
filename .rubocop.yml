@@ -4,6 +4,8 @@ AllCops:
   TargetRubyVersion: 2.5
 Style/Documentation:
   Enabled: false
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: consistent_comma
 Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: consistent_comma
 Metrics/AbcSize:
@@ -11,6 +13,8 @@ Metrics/AbcSize:
 Metrics/CyclomaticComplexity:
   Enabled: false
 Metrics/MethodLength:
+  Enabled: false
+Metrics/BlockLength:
   Enabled: false
 Layout/LineLength:
   Enabled: false

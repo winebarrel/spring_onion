@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
+require 'active_record'
 require 'spring_onion'
+require 'models'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

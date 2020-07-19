@@ -3,4 +3,7 @@ language: ruby
 cache: bundler
 rvm:
   - 2.6.6
+gemfile:
+  - gemfiles/ar52.gemfile
+  - gemfiles/ar60.gemfile
 before_install: gem install bundler -v 2.1.2

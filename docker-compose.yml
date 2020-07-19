@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  client:
+    build: .
+    environment:
+      MYSQL_PING_ATTEMPTS: "10"
+      DATABASE_URL: mysql2://root@db/sakila
+    volumes:
+      - ./:/mnt
+    depends_on:
+      - db
+  db:
+    image: budougumi0617/mysql-sakila:5.7
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "1"

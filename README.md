@@ -75,3 +75,10 @@ p Employee.all.to_a.count
     ]
 }
 ```
+
+## Test
+
+```sh
+docker-compose build
+docker-compose run client bundle exec appraisal ar60 rake
+```
