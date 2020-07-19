@@ -28,7 +28,6 @@ Or install it yourself as:
 #!/usr/bin/env ruby
 require 'active_record'
 require 'spring_onion'
-require 'logger'
 
 ActiveRecord::Base.establish_connection(
   adapter:  'mysql2',
