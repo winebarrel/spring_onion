@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    spring_onion (1.0.4)
+    spring_onion (1.0.5)
       activerecord
       coderay
       mysql2
