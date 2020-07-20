@@ -15,7 +15,7 @@ require 'spring_onion/version'
 ActiveSupport.on_load :active_record do
   if ENV['SPRING_ONION_DATABASE_URL'] && !SpringOnion.connection
     SpringOnion.connection = Mysql2::Client.new(
-      ActiveRecord::ConnectionAdapters::ConnectionSpecification::ConnectionUrlResolver.new(url).to_hash
+      ActiveRecord::ConnectionAdapters::ConnectionSpecification::ConnectionUrlResolver.new(ENV['SPRING_ONION_DATABASE_URL']).to_hash
     )
   end
 
