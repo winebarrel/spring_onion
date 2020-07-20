@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    spring_onion (1.0.1)
+    spring_onion (1.0.2)
       activerecord
       coderay
       mysql2
@@ -28,7 +28,7 @@ GEM
     coderay (1.1.3)
     concurrent-ruby (1.1.6)
     diff-lcs (1.4.4)
-    i18n (1.8.3)
+    i18n (1.8.4)
       concurrent-ruby (~> 1.0)
     minitest (5.14.1)
     mysql2 (0.5.3)
