@@ -59,7 +59,7 @@ module SpringOnion
     idx ? backtrace_lines.slice(idx..-1) : []
   end
 
-  @logger = Logger.new($stdout).tap do |logger|
+  @logger = Logger.new(ENV['SPRING_ONION_LOG'] || $stdout).tap do |logger|
     logger.formatter = lambda do |severity, datetime, _progname, msg|
       "\n#{self}\t#{severity}\t#{datetime}\t#{msg}\n"
     end
