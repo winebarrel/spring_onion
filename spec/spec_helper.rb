@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
-require 'active_record'
 require 'spring_onion'
+require 'active_record'
 require 'models'
 
 RSpec.configure do |config|
