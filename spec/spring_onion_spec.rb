@@ -27,7 +27,8 @@ RSpec.describe SpringOnion do
 
     specify 'slow query' do
       expect(SpringOnion::JsonLogger).to receive(:log) do |args|
-        args.fetch(:trace).each { |t| t.sub!(/:.*\z/, '') }
+        args.fetch(:trace).each { |t| t.sub!(%r{\A/.*/}, '').sub!(/:.*\z/, '') }
+        args.fetch(:explain).fetch(0)['rows'] = 100
 
         expect(args).to eq(
           explain: [
@@ -39,7 +40,7 @@ RSpec.describe SpringOnion do
               'partitions' => nil,
               'possible_keys' => nil,
               'ref' => nil,
-              'rows' => 25,
+              'rows' => 100,
               'select_type' => 'SIMPLE',
               'table' => 'actor',
               'type' => 'ALL',
@@ -47,7 +48,7 @@ RSpec.describe SpringOnion do
           ],
           sql: 'SELECT `actor`.* FROM `actor`',
           trace: [
-            '/mnt/spec/spring_onion_spec.rb',
+            'spring_onion_spec.rb',
           ],
           warnings: {
             0 => [:slow_type],
@@ -63,7 +64,7 @@ RSpec.describe SpringOnion do
       SpringOnion.log_all = true
 
       expect(SpringOnion::JsonLogger).to receive(:log) do |args|
-        args.fetch(:trace).each { |t| t.sub!(/:.*\z/, '') }
+        args.fetch(:trace).each { |t| t.sub!(%r{\A/.*/}, '').sub!(/:.*\z/, '') }
 
         expect(args).to eq(
           explain: [
@@ -83,7 +84,7 @@ RSpec.describe SpringOnion do
           ],
           sql: 'SELECT `actor`.* FROM `actor` WHERE `actor`.`actor_id` = 1',
           trace: [
-            '/mnt/spec/spring_onion_spec.rb',
+            'spring_onion_spec.rb',
           ],
           warnings: {}
         )
