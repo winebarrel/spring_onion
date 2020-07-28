@@ -65,6 +65,7 @@ module SpringOnion
     end
   end
 
+  @log_all = (/\A(1|true)\z/i =~ ENV['SPRING_ONION_LOG_ALL'])
   @trace_len = 3
   @json_pretty = (/\A(1|true)\z/i =~ ENV['SPRING_ONION_JSON_PRETTY'])
   @color = /\A(1|true)\z/i =~ ENV.fetch('SPRING_ONION_COLOR', @logger.instance_variable_get(:@logdev)&.dev&.tty?&.to_s)
@@ -76,6 +77,7 @@ module SpringOnion
                   :sql_filter_re, :ignore_sql_filter_re, :sql_filter,
                   :source_filter_re, :ignore_source_filter_re, :source_filter,
                   :logger,
+                  :log_all,
                   :trace_len,
                   :json_pretty,
                   :color

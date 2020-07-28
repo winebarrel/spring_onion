@@ -17,6 +17,7 @@ RSpec.describe SpringOnion do
     before do
       SpringOnion.source_filter_re = %r{/spec/}
       SpringOnion.sql_filter_re = /actor/
+      expect(SpringOnion.logger).to_not receive(:error)
     end
 
     specify 'no slow query' do
@@ -26,11 +27,8 @@ RSpec.describe SpringOnion do
 
     specify 'slow query' do
       expect(SpringOnion::JsonLogger).to receive(:log) do |args|
-        args.fetch(:explain).tap do |exp|
-          exp['rows'] = 100
-        end
-
-        args.fetch(:trace).each { |t| t.sub!(/:.*\z/, '') }
+        args.fetch(:trace).each { |t| t.sub!(%r{\A/.*/}, '').sub!(/:.*\z/, '') }
+        args.fetch(:explain).fetch(0)['rows'] = 100
 
         expect(args).to eq(
           explain: [
@@ -50,7 +48,7 @@ RSpec.describe SpringOnion do
           ],
           sql: 'SELECT `actor`.* FROM `actor`',
           trace: [
-            '/mnt/spec/spring_onion_spec.rb',
+            'spring_onion_spec.rb',
           ],
           warnings: {
             0 => [:slow_type],
@@ -62,22 +60,73 @@ RSpec.describe SpringOnion do
       City.all.to_a
     end
 
+    specify 'no slow query with log_all' do
+      SpringOnion.log_all = true
+
+      expect(SpringOnion::JsonLogger).to receive(:log) do |args|
+        args.fetch(:trace).each { |t| t.sub!(%r{\A/.*/}, '').sub!(/:.*\z/, '') }
+
+        expect(args).to eq(
+          explain: [
+            {
+              'Extra' => nil,
+              'filtered' => 100.0,
+              'key' => 'PRIMARY',
+              'key_len' => '2',
+              'partitions' => nil,
+              'possible_keys' => 'PRIMARY',
+              'ref' => 'const',
+              'rows' => 1,
+              'select_type' => 'SIMPLE',
+              'table' => 'actor',
+              'type' => 'const',
+            },
+          ],
+          sql: 'SELECT `actor`.* FROM `actor` WHERE `actor`.`actor_id` = 1',
+          trace: [
+            'spring_onion_spec.rb',
+          ],
+          warnings: {}
+        )
+      end
+
+      Actor.where(actor_id: 1).to_a
+    end
+
     specify 'no connection' do
       allow(SpringOnion).to receive(:connection).and_return(nil)
 
       expect do
         Actor.all.to_a
-      end.to raise_error(SpringOnion::Error)
+      end.to raise_error(SpringOnion::Error, 'MySQL connection is not set')
     end
   end
 
   context 'without explain' do
     before do
       SpringOnion.source_filter_re = %r{/$^/}
+      expect(SpringOnion.logger).to_not receive(:error)
     end
 
     specify 'slow query' do
       expect(SpringOnion::JsonLogger).to_not receive(:log)
+      Actor.all.to_a
+    end
+  end
+
+  context 'with StandardError' do
+    before do
+      SpringOnion.source_filter_re = %r{/spec/}
+      SpringOnion.sql_filter_re = /actor/
+    end
+
+    specify 'slow query' do
+      allow(SpringOnion::JsonLogger).to receive(:log).and_raise('standard error')
+
+      expect(SpringOnion.logger).to receive(:error).with(
+        %r{standard error\n\t/.*:}
+      )
+
       Actor.all.to_a
     end
   end

@@ -27,7 +27,7 @@ module SpringOnion
       rescue SpringOnion::Error
         raise
       rescue StandardError => e
-        SpringOnion.logger.error(e)
+        SpringOnion.logger.error("#{e}\n\t#{e.backtrace.join("\n\t")}")
       end
 
       yield
@@ -45,7 +45,7 @@ module SpringOnion
         warning_names_by_index[i] = warning_names unless warning_names.empty?
       end
 
-      return if warning_names_by_index.empty?
+      return if !SpringOnion.log_all && warning_names_by_index.empty?
 
       SpringOnion::JsonLogger.log(
         sql: sql,
