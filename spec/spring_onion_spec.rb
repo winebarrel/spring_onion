@@ -92,14 +92,6 @@ RSpec.describe SpringOnion do
 
       Actor.where(actor_id: 1).to_a
     end
-
-    specify 'no connection' do
-      allow(SpringOnion).to receive(:connection).and_return(nil)
-
-      expect do
-        Actor.all.to_a
-      end.to raise_error(SpringOnion::Error, 'MySQL connection is not set')
-    end
   end
 
   context 'without explain' do

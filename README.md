@@ -36,7 +36,8 @@ ActiveRecord::Base.establish_connection(
 )
 
 SpringOnion.enabled = true # or `SPRING_ONION_ENABLED=1`
-SpringOnion.connection = ActiveRecord::Base.connection.raw_connection # or `SPRING_ONION_DATABASE_URL=mysql2://...`
+# `SPRING_ONION_DATABASE_URL=mysql2://...`
+# default: SpringOnion.connection = ActiveRecord::Base.connection.raw_connection
 SpringOnion.source_filter_re = //
 
 class Employee < ActiveRecord::Base; end

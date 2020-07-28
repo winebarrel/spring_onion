@@ -16,16 +16,12 @@ module SpringOnion
           trace = SpringOnion.source_filter.call(caller)
 
           unless trace.length.zero?
-            conn = SpringOnion.connection
-            raise SpringOnion::Error, 'MySQL connection is not set' unless conn
-
+            conn = SpringOnion.connection || raw_connection
             exp = conn.query("EXPLAIN #{sql}", as: :hash).to_a
             exp.each { |r| r.delete('id') }
             _validate_explain(sql: sql, exp: exp, trace: trace)
           end
         end
-      rescue SpringOnion::Error
-        raise
       rescue StandardError => e
         SpringOnion.logger.error("#{e}\n\t#{e.backtrace.join("\n\t")}")
       end
